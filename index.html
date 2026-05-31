@@ -3,252 +3,278 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>News Aggregator</title>
+<title>News App</title>
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-    *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-    }
+body{
+background:#f5f7fb;
+}
 
-    body{
-    background:#f5f7fb;
-    }
+.navbar{
+background:#0f172a;
+color:white;
+padding:20px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+}
 
-    .navbar{
-    background:#0f172a;
-    color:white;
-    padding:20px 50px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    }
+/* SEARCH */
+.search-container{
+display:flex;
+justify-content:center;
+margin:20px;
+}
 
-    .logo{
-    font-size:28px;
-    font-weight:bold;
-    }
+.search-container input{
+width:400px;
+padding:12px;
+border:1px solid #ddd;
+border-radius:25px 0 0 25px;
+outline:none;
+}
 
-    .logo i{
-    margin-right:10px;
-    }
+.search-container button{
+padding:12px 20px;
+border:none;
+background:#2563eb;
+color:white;
+cursor:pointer;
+border-radius:0 25px 25px 0;
+}
 
-    .nav-links{
-    display:flex;
-    list-style:none;
-    gap:30px;
-    }
+/* CATEGORY */
+.categories{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px;
+}
 
-    .nav-links a{
-    color:white;
-    text-decoration:none;
-    font-size:17px;
-    transition:.3s;
-    }
+.categories button{
+padding:8px 15px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+background:#e5e7eb;
+font-weight:500;
+transition:0.3s;
+}
 
-    .nav-links a:hover{
-    color:#60a5fa;
-    }
+.categories button:hover{
+background:#2563eb;
+color:white;
+}
 
-    .search-container{
-    width:60%;
-    margin:25px auto;
-    display:flex;
-    justify-content:center;
-    }
+.categories .active{
+background:#2563eb;
+color:white;
+}
 
-    .search-container input{
-    width:450px;
-    padding:15px;
-    border:1px solid #ddd;
-    border-radius:30px 0 0 30px;
-    font-size:16px;
-    outline:none;
-    }
+/* NEWS */
+.news-container{
+width:90%;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+padding:20px;
+}
 
-    .search-container button{
-    padding:15px 25px;
-    border:none;
-    background:#2563eb;
-    color:white;
-    cursor:pointer;
-    border-radius:0 30px 30px 0;
-    }
+.card{
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
 
-    .categories{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:12px;
-    margin-bottom:30px;
-    }
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
 
-    .categories button{
-    border:none;
-    background:#2563eb;
-    color:white;
-    padding:10px 18px;
-    border-radius:25px;
-    cursor:pointer;
-    }
+.card-content{
+padding:15px;
+}
 
-    .categories button:hover{
-    background:#1d4ed8;
-    }
-    .news-container{
-    width:90%;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:20px;
-    padding-bottom:30px;
-    }
-    .card{
-    background:white;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .card img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    }
-
-    .card-content{
-    padding:15px;
-    }
-
-    .card-content h3{
-    margin-bottom:10px;
-    }
+.card-content h3{
+margin-bottom:10px;
+font-size:18px;
+}
 
 .card-content p{
-    color:#555;
-    margin-bottom:12px;
+color:#555;
+margin-bottom:10px;
 }
 
 .card-content a{
-    text-decoration:none;
-    color:#2563eb;
-    font-weight:bold;
-}
-
-    @media(max-width:768px){
-
-    .navbar{
-    flex-direction:column;
-    gap:15px;
-    }
-
-    .nav-links{
-    gap:15px;
-    }
+text-decoration:none;
+color:#2563eb;
+font-weight:bold;
 }
 </style>
 </head>
+
 <body>
-    <nav class="navbar">
-    <div class="logo">
-    <i class="fa-solid fa-newspaper"></i>News Aggregator</div>
-    <ul class="nav-links">
-    <li>
-        <a href="#">
-        <i class="fa-solid fa-house"></i>Home</a>
-    </li>
 
-    <li>
-    <a href="#">
-    <i class="fa-solid fa-layer-group"></i>Categories</a>
-    </li>
-    <li>
-    <a href="#">
-    <i class="fa-solid fa-circle-info"></i>About</a>
-    </li>
-    </ul>
-    </nav>
-    <div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search latest news...">
-    <button onclick="searchNews()">
-    <i class="fa-solid fa-magnifying-glass"></i>Search</button>
-    </div>
-    <div class="categories">
-    <button onclick="loadTopHeadlines()">All</button>
-    <button onclick="getCategory('general')">General</button>
-    <button onclick="getCategory('technology')">Technology</button>
-    <button onclick="getCategory('business')">Business</button>
-    <button onclick="getCategory('sports')">Sports</button>
-    <button onclick="getCategory('health')">Health</button>
-    <button onclick="getCategory('science')">Science</button>
-    </div>
-    <div class="news-container" id="newsContainer">
-    </div>
-    <script>
-    const API_KEY = "77d9fdba065c4ab1a0241bfa4f5c49f0";
-    window.onload = () =>{
-    loadTopHeadlines();
-    };
-    async function loadTopHeadlines(){
-    const url=`https://newsapi.org/v2/top-headlines?country=us&pageSize=20&apiKey=${API_KEY}`;
-    fetchNews(url);
-    }
-    async function getCategory(category){
-    const url=`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`;
-    fetchNews(url);
-    }
-    async function searchNews(){
-    const searchText=
-    document.getElementById("searchInput").value;
-    if(searchText===""){
-        return;
-    }
-    const url=`https://newsapi.org/v2/everything?q=${searchText}&sortBy=publishedAt&apiKey=${API_KEY}`;
-    fetchNews(url);
-    }
-    async function fetchNews(url){
-    try{
-        const response=await fetch(url);
-        const data=await response.json();
-        displayNews(data.articles);
-    }
-    catch(error){
+<div class="navbar">📰 News Aggregator</div>
 
-        console.log(error);
-    }
-    }
-    function displayNews(articles){
-    let output="";
-    articles.forEach(article=>{
-        const image=
-        article.urlToImage ||
-        "https://picsum.photos/600/400";
-        output+=`<div class="card">
-        <img src="${image}">
-        <div class="card-content">
-        <h3>${article.title || "No Title"}</h3>
-        <p>
-        ${
-        article.description
-        ? article.description.substring(0,120)
-        : "No Description Available"
-        }
-        </p>
-        <a href="${article.url}" target="_blank">
-        Read More
-        </a>
-        </div>
-        </div>
+<!-- SEARCH -->
+<div class="search-container">
+<input type="text" id="searchInput" placeholder="Search news...">
+<button onclick="searchNews()">Search</button>
+</div>
 
-        `;
-    });
+<!-- CATEGORIES -->
+<div class="categories">
+<button class="active" onclick="setCategory('general', this)">All</button>
+<button onclick="setCategory('technology', this)">Technology</button>
+<button onclick="setCategory('business', this)">Business</button>
+<button onclick="setCategory('entertainment', this)">Entertainment</button>
+<button onclick="setCategory('sports', this)">Sports</button>
+<button onclick="setCategory('health', this)">Health</button>
+<button onclick="setCategory('science', this)">Science</button>
+</div>
 
-    document.getElementById("newsContainer").innerHTML=output;
-    }
+<div class="news-container" id="newsContainer"></div>
+
+<script>
+
+const API_KEY = "7dc4cb214d0a0d7fddcbca3a416770fe";
+
+let currentCategory = "general";
+
+window.onload = () => {
+loadNews("india");
+};
+
+/* 🔥 LOAD NEWS */
+function loadNews(query){
+const url = `https://gnews.io/api/v4/search?q=${query}&lang=en&max=20&apikey=${API_KEY}`;
+fetchNews(url);
+}
+
+/* 🔎 SEARCH */
+function searchNews(){
+let q = document.getElementById("searchInput").value;
+if(!q) q = "india";
+loadNews(q);
+}
+
+/* 🧠 CATEGORY CLICK (YOUR FIXED LOGIC ADDED) */
+function setCategory(category, btn){
+
+currentCategory = category;
+
+// active UI
+document.querySelectorAll(".categories button")
+.forEach(b => b.classList.remove("active"));
+
+btn.classList.add("active");
+
+// 🔥 KEY FIX: map categories to real queries
+let query = "india";
+
+switch(category){
+case "general":
+query = "india";
+break;
+
+case "technology":
+query = "technology OR ai OR software";
+break;
+
+case "business":
+query = "business OR stock market";
+break;
+
+case "entertainment":
+query = "movies OR cinema OR entertainment";
+break;
+
+case "sports":
+query = "sports cricket";
+break;
+
+case "health":
+query = "health medicine";
+break;
+
+case "science":
+query = "science research";
+break;
+}
+
+loadNews(query);
+}
+
+/* 📡 FETCH NEWS */
+async function fetchNews(url){
+try{
+const res = await fetch(url);
+const data = await res.json();
+
+if(!data || !data.articles){
+document.getElementById("newsContainer").innerHTML =
+"<h2 style='text-align:center;color:red;'>No news found</h2>";
+return;
+}
+
+// REMOVE DUPLICATES
+const seen = new Set();
+const uniqueArticles = [];
+
+data.articles.forEach(article => {
+const key = (article.title + article.url).toLowerCase();
+
+if(!seen.has(key)){
+seen.add(key);
+uniqueArticles.push(article);
+}
+});
+
+displayNews(uniqueArticles);
+
+}catch(err){
+console.log(err);
+document.getElementById("newsContainer").innerHTML =
+"<h2 style='text-align:center;color:red;'>Failed to load news</h2>";
+}
+}
+
+/* 📰 DISPLAY */
+function displayNews(articles){
+let output = "";
+
+articles.forEach(a => {
+output += `
+<div class="card">
+<img src="${a.image || 'https://picsum.photos/600/400'}">
+<div class="card-content">
+<h3>${a.title || "No Title"}</h3>
+<p>${a.description ? a.description.substring(0,120) : ""}</p>
+<a href="${a.url}" target="_blank">Read More</a>
+</div>
+</div>
+`;
+});
+
+document.getElementById("newsContainer").innerHTML = output;
+}
+
 </script>
+
 </body>
 </html>
