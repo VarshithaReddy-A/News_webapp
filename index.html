@@ -146,15 +146,22 @@ font-weight:bold;
 
 <script>
 
-// YOUR API KEY (Currents API)
 const API_KEY = "RHkXHlD7gEahqoPT2KeVIvbo1b6Gx3bZCVGYrLyo_WjCA0I4";
 
 let currentCategory = "general";
 
-// ================= INIT =================
 window.onload = () => {
   loadNews("india");
 };
+
+// 🔥 NORMALIZE FUNCTION (important fix)
+function normalize(str){
+  return (str || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 // ================= LOAD NEWS =================
 function loadNews(query){
@@ -179,9 +186,10 @@ function loadNews(query){
     const uniqueArticles = [];
 
     data.news.forEach(article => {
-      const key = (article.title + article.url).toLowerCase();
 
-      if(!seen.has(key)){
+      const key = normalize(article.title);
+
+      if (key && !seen.has(key)) {
         seen.add(key);
         uniqueArticles.push(article);
       }
