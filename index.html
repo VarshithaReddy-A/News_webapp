@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>News App</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-
 <style>
 *{
 margin:0;
@@ -28,7 +25,6 @@ text-align:center;
 font-size:24px;
 font-weight:bold;
 }
-
 
 .search-container{
 display:flex;
@@ -81,7 +77,6 @@ background:#2563eb;
 color:white;
 }
 
-
 .news-container{
 width:90%;
 margin:auto;
@@ -100,7 +95,7 @@ box-shadow:0 2px 10px rgba(0,0,0,0.1);
 
 .card img{
 width:100%;
-height:200px;
+height:180px;
 object-fit:cover;
 }
 
@@ -151,121 +146,123 @@ font-weight:bold;
 
 <script>
 
-const API_KEY = "7dc4cb214d0a0d7fddcbca3a416770fe";
+// YOUR API KEY (Currents API)
+const API_KEY = "RHkXHlD7gEahqoPT2KeVIvbo1b6Gx3bZCVGYrLyo_WjCA0I4";
 
 let currentCategory = "general";
 
+// ================= INIT =================
 window.onload = () => {
-loadNews("india");
+  loadNews("india");
 };
 
-
+// ================= LOAD NEWS =================
 function loadNews(query){
-const url = `https://gnews.io/api/v4/search?q=${query}&lang=en&max=20&apikey=${API_KEY}`;
-fetchNews(url);
+
+  const url = `https://api.currentsapi.services/v1/search?keywords=${query}&language=en`;
+
+  fetch(url, {
+    headers: {
+      "Authorization": API_KEY
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    if(!data || !data.news){
+      document.getElementById("newsContainer").innerHTML =
+      "<h2 style='text-align:center;color:red;'>No news found</h2>";
+      return;
+    }
+
+    const seen = new Set();
+    const uniqueArticles = [];
+
+    data.news.forEach(article => {
+      const key = (article.title + article.url).toLowerCase();
+
+      if(!seen.has(key)){
+        seen.add(key);
+        uniqueArticles.push(article);
+      }
+    });
+
+    displayNews(uniqueArticles);
+
+  })
+  .catch(err => {
+    console.log(err);
+    document.getElementById("newsContainer").innerHTML =
+    "<h2 style='text-align:center;color:red;'>Failed to load news</h2>";
+  });
 }
 
-
+// ================= SEARCH =================
 function searchNews(){
-let q = document.getElementById("searchInput").value;
-if(!q) q = "india";
-loadNews(q);
+  let q = document.getElementById("searchInput").value;
+  if(!q) q = "india";
+  loadNews(q);
 }
 
+// ================= CATEGORY =================
 function setCategory(category, btn){
 
-currentCategory = category;
+  currentCategory = category;
 
-document.querySelectorAll(".categories button")
-.forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".categories button")
+  .forEach(b => b.classList.remove("active"));
 
-btn.classList.add("active");
+  btn.classList.add("active");
 
-let query = "india";
+  let query = "india";
 
-switch(category){
-case "general":
-query = "india";
-break;
+  switch(category){
+    case "general":
+      query = "india";
+      break;
+    case "technology":
+      query = "technology OR ai OR software";
+      break;
+    case "business":
+      query = "business stock market";
+      break;
+    case "entertainment":
+      query = "movies entertainment";
+      break;
+    case "sports":
+      query = "sports cricket";
+      break;
+    case "health":
+      query = "health medicine";
+      break;
+    case "science":
+      query = "science research";
+      break;
+  }
 
-case "technology":
-query = "technology OR ai OR software";
-break;
-
-case "business":
-query = "business OR stock market";
-break;
-
-case "entertainment":
-query = "movies OR cinema OR entertainment";
-break;
-
-case "sports":
-query = "sports cricket";
-break;
-
-case "health":
-query = "health medicine";
-break;
-
-case "science":
-query = "science research";
-break;
+  loadNews(query);
 }
 
-loadNews(query);
-}
-
-async function fetchNews(url){
-try{
-const res = await fetch(url);
-const data = await res.json();
-
-if(!data || !data.articles){
-document.getElementById("newsContainer").innerHTML =
-"<h2 style='text-align:center;color:red;'>No news found</h2>";
-return;
-}
-
-const seen = new Set();
-const uniqueArticles = [];
-
-data.articles.forEach(article => {
-const key = (article.title + article.url).toLowerCase();
-
-if(!seen.has(key)){
-seen.add(key);
-uniqueArticles.push(article);
-}
-});
-
-displayNews(uniqueArticles);
-
-}catch(err){
-console.log(err);
-document.getElementById("newsContainer").innerHTML =
-"<h2 style='text-align:center;color:red;'>Failed to load news</h2>";
-}
-}
-
-
+// ================= DISPLAY NEWS =================
 function displayNews(articles){
-let output = "";
 
-articles.forEach(a => {
-output += `
-<div class="card">
-<img src="${a.image || 'https://picsum.photos/600/400'}">
-<div class="card-content">
-<h3>${a.title || "No Title"}</h3>
-<p>${a.description ? a.description.substring(0,120) : ""}</p>
-<a href="${a.url}" target="_blank">Read More</a>
-</div>
-</div>
-`;
-});
+  let output = "";
 
-document.getElementById("newsContainer").innerHTML = output;
+  articles.forEach(a => {
+
+    output += `
+      <div class="card">
+        <img src="${a.image || 'https://picsum.photos/600/400'}">
+        <div class="card-content">
+          <h3>${a.title || "No Title"}</h3>
+          <p>${a.description ? a.description.substring(0,120) : ""}</p>
+          <a href="${a.url}" target="_blank">Read More</a>
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById("newsContainer").innerHTML = output;
 }
 
 </script>
