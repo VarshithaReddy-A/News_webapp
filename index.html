@@ -29,7 +29,7 @@ font-size:24px;
 font-weight:bold;
 }
 
-/* SEARCH */
+
 .search-container{
 display:flex;
 justify-content:center;
@@ -53,7 +53,6 @@ cursor:pointer;
 border-radius:0 25px 25px 0;
 }
 
-/* CATEGORY */
 .categories{
 display:flex;
 justify-content:center;
@@ -82,7 +81,7 @@ background:#2563eb;
 color:white;
 }
 
-/* NEWS */
+
 .news-container{
 width:90%;
 margin:auto;
@@ -160,31 +159,28 @@ window.onload = () => {
 loadNews("india");
 };
 
-/* 🔥 LOAD NEWS */
+
 function loadNews(query){
 const url = `https://gnews.io/api/v4/search?q=${query}&lang=en&max=20&apikey=${API_KEY}`;
 fetchNews(url);
 }
 
-/* 🔎 SEARCH */
+
 function searchNews(){
 let q = document.getElementById("searchInput").value;
 if(!q) q = "india";
 loadNews(q);
 }
 
-/* 🧠 CATEGORY CLICK (YOUR FIXED LOGIC ADDED) */
 function setCategory(category, btn){
 
 currentCategory = category;
 
-// active UI
 document.querySelectorAll(".categories button")
 .forEach(b => b.classList.remove("active"));
 
 btn.classList.add("active");
 
-// 🔥 KEY FIX: map categories to real queries
 let query = "india";
 
 switch(category){
@@ -220,7 +216,6 @@ break;
 loadNews(query);
 }
 
-/* 📡 FETCH NEWS */
 async function fetchNews(url){
 try{
 const res = await fetch(url);
@@ -232,7 +227,6 @@ document.getElementById("newsContainer").innerHTML =
 return;
 }
 
-// REMOVE DUPLICATES
 const seen = new Set();
 const uniqueArticles = [];
 
@@ -254,7 +248,6 @@ document.getElementById("newsContainer").innerHTML =
 }
 }
 
-/* 📰 DISPLAY */
 function displayNews(articles){
 let output = "";
 
